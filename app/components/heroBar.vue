@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 const colorMode = useColorMode();
 const isDark = computed({
   get() {
@@ -9,73 +9,114 @@ const isDark = computed({
   },
 });
 
+const routes = [
+  {
+    name: "Dashboard",
+    path: "/",
+    icon: "si:dashboard-fill",
+  },
+   {
+    name: "Kassa",
+    path: "/kassa",
+    icon: "andrsrxn:money-check",
+  },
+];
+
+const route = useRoute();
+const isActive = (path: string) => route.path === path;
+
 import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore();
-
-const logOut = () => {
-  authStore.logout();
-};
 </script>
 
 <template>
-  <!-- Glassmorphism effekti va sticky joylashuv -->
-  <div
-    class="sticky top-4 z-50 mb-8 p-3 px-5 rounded-2xl flex justify-between items-center bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 shadow-sm transition-all duration-300"
+  <!-- Yuqori panel (Header) -->
+  <header
+    class="flex h-14 sm:h-16 items-center justify-between gap-3 rounded-2xl border border-default bg-default/80 px-3 sm:px-5 shadow-sm backdrop-blur-xl"
   >
-    <!-- Sarlavha qismi -->
+    <!-- Chap qism -->
+    <div class="flex min-w-0 items-center gap-3">
+      <!-- Mobil logo (sidebar yashiringanda ko'rinadi) -->
+      <div class="flex items-center gap-2.5 sm:hidden">
+        <div
+          class="flex size-9 items-center justify-center rounded-xl bg-primary text-white shadow-md shadow-primary/30"
+        >
+          <UIcon name="i-lucide-trending-up" class="size-4.5" />
+        </div>
+        <span class="text-[15px] font-semibold tracking-tight text-highlighted">
+          YuGaz
+        </span>
+      </div>
 
-    <div class="text-xl font-bold capitalize">
-      {{ authStore.user?.company }}
+      <!-- Joriy sahifa nomi (katta ekranda) -->
+      <template v-for="item in routes" :key="item.path">
+        <div
+          v-if="isActive(item.path)"
+          class="hidden min-w-0 items-center gap-3 sm:flex"
+        >
+          <div
+            class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+          >
+            <UIcon :name="item.icon" class="size-4.5" />
+          </div>
+          <div class="min-w-0">
+            <p class="flex items-center gap-1.5 text-[11px] leading-none text-dimmed">
+              YuGaz
+              <UIcon name="i-lucide-chevron-right" class="size-3" />
+              {{ item.name }}
+            </p>
+            <h2
+              class="mt-1.5 truncate text-base font-semibold leading-none tracking-tight text-highlighted"
+            >
+              {{ item.name }}
+            </h2>
+          </div>
+        </div>
+      </template>
     </div>
 
-    <!-- Amallar qismi -->
-    <div class="flex items-center gap-2 sm:gap-4">
-      <!-- Tungi/Kunduzgi rejim -->
-
-      <!-- Sozlamalar -->
-      <NuxtLink to="/setting">
-        <UButton
-          icon="uil:setting"
-          variant="ghost"
-          class="rounded-xl text-gray-400 transition-transform hover:scale-105"
-          aria-label="Sozlamalar"
-        />
-      </NuxtLink>
-
-      <!-- logout -->
-      <UIcon
-        name="lets-icons:on-button"
-        class="text-xl cursor-pointer"
-        @click="logOut()"
+    <!-- O'ng qism: Dark Mode va Profil -->
+    <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+      <!-- Tungi/Kunduzgi rejim tugmasi -->
+      <UButton
+        @click.stop="isDark = !isDark;"
+        :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+        color="neutral"
+        variant="ghost"
+        class="rounded-lg"
+        aria-label="Mavzuni o'zgartirish"
       />
 
-      <!-- Ajratuvchi chiziq (Divider) -->
-      <div
-        class="h-8 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block mx-1"
-      ></div>
+      <span class="h-6 w-px bg-border"></span>
 
-      <!-- Foydalanuvchi profili -->
-      <div class="mt-auto border-t border-gray-100 dark:border-gray-800">
+      <!-- Profil -->
+      <div class="flex items-center gap-2.5">
+        <div class="hidden flex-col text-right md:flex">
+          <span
+            class="mb-1 text-[13px] font-semibold leading-none text-highlighted capitalize"
+            >{{ authStore.user?.fName }} {{ authStore.user?.lName[0] }}.</span
+          >
+          <span class="text-[11px] leading-none text-muted">{{
+            authStore.user?.role
+          }}</span>
+        </div>
         <div
-          class="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer group"
+          class="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold uppercase text-primary ring-1 ring-primary/20"
         >
-          <div class="flex items-center gap-3">
-            <!-- Avatar atrofiga hoshiya (ring) berildi -->
-
-            <div class="flex flex-col text-left">
-              <span
-                class="text-[13px] font-semibold text-gray-900 dark:text-white leading-none mb-1 capitalize"
-                >{{ authStore.user?.fName }}
-                {{ authStore.user?.lName[0] }}.</span
-              >
-              <span
-                class="text-[11px] text-gray-500 dark:text-gray-400 leading-none"
-                >{{ authStore.user?.role }}</span
-              >
-            </div>
-          </div>
+          {{ authStore.user?.fName?.[0] }}
         </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>
+
+<style scoped>
+/* Scrollbarni yashirish (agar menyu ko'payib ketsa xunuk ko'rinmasligi uchun) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

@@ -7,12 +7,12 @@
 
 :root {
   --ui-bg: var(--ui-color-neutral-50);
-  --ui-primary: var(--ui-color-secondary-400);
+  --ui-primary: var(--ui-color-primary-400);
   --ui-text: black;
 }
 
 .dark {
   --ui-bg: var(--ui-color-neutral-950);
-  --ui-primary: var(--ui-color-secondary-400);
+  --ui-primary: var(--ui-color-primary-400);
   --ui-text: white;
 }

@@ -15,33 +15,48 @@ const routes = [
     path: "/",
     icon: "si:dashboard-fill",
   },
-  /* {
+  {
+    name: "Kassa",
+    path: "/kassa",
+    icon: "andrsrxn:money-check",
+    roles: ["director", "ceo", "moliyachi", "kassir", "operator"],
+  },
+ /*  {
     name: "Hamyon",
     path: "/menu/wallet",
     icon: "solar:wallet-bold",
+    roles: ["admin", "director", "ceo", "moliyachi", "kassir"],
   },
   {
     name: "Nachisleniya",
     path: "/menu/nachisleniya",
     icon: "fluent:notepad-edit-16-filled",
+    roles: ["admin", "director", "ceo", "moliyachi", "bugalter"],
   },
   {
     name: "Kirim | Chiqim",
     path: "/menu/transaction",
     icon: "grommet-icons:transaction",
+    roles: ["admin", "director", "ceo", "moliyachi", "bugalter", "kassir"],
   },
   {
     name: "Xodimlar",
     path: "/menu/worker",
     icon: "solar:user-bold",
+    roles: ["admin", "director", "ceo", "moliyachi"],
   },
-  { name: "Asosiy vosita", path: "/menu/asset", icon: "i-lucide-building" },
+
   {
     name: "Kategoriyalar",
     path: "/menu/category",
     icon: "material-symbols:category-rounded",
+    roles: ["admin", "director"],
   }, */
 ];
+
+const visibleRoutes = computed(() =>
+  routes.filter((item) => !item.roles || authStore.hasRole(...item.roles)),
+);
 
 const route = useRoute();
 const isActive = (path: string) => route.path === path;
@@ -52,24 +67,22 @@ const authStore = useAuthStore();
 
 <template>
   <!-- Asosiy Sidebar qutisi -->
-  <aside
-    class="w-64 h-screen flex flex-col px-4 py-6 bg-white/50 dark:bg-slate-800/40 backdrop-blur-xl"
-  >
+  <aside class="w-64 h-screen flex flex-col bg-default">
     <!-- Logo qismi -->
-    <div class="flex items-center gap-3 px-2 mb-8">
+    <div class="flex h-20 shrink-0 items-center gap-3 px-5">
       <div
-        class="w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30 flex items-center justify-center text-white transform transition-transform hover:rotate-3 hover:scale-105 cursor-pointer"
+        class="flex size-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/30 transition-transform duration-300 hover:scale-105 cursor-pointer"
       >
-        <UIcon name="i-lucide-trending-up" class="text-xl" />
+        <UIcon name="icon-park-solid:level" class="size-5" />
       </div>
-      <div>
+      <div class="min-w-0">
         <h1
-          class="text-sm font-bold text-gray-900 dark:text-white tracking-wide"
+          class="text-[15px] font-semibold leading-tight tracking-tight text-highlighted"
         >
-          Moliya
+          YuGaz
         </h1>
         <p
-          class="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest"
+          class="mt-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-dimmed"
         >
           Boshqaruv tizimi
         </p>
@@ -78,68 +91,79 @@ const authStore = useAuthStore();
 
     <!-- Menyu (Navigatsiya) -->
     <nav
-      class="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide -mx-2 px-2"
+      class="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide px-3 pt-2"
     >
-      <ul class="flex flex-col gap-1.5">
-        <li v-for="item in routes" :key="item.path">
+      <p
+        class="mb-2 px-3 text-[11px] font-medium uppercase tracking-[0.12em] text-dimmed"
+      >
+        Asosiy menyu
+      </p>
+      <ul class="flex flex-col gap-1">
+        <li v-for="item in visibleRoutes" :key="item.path">
           <NuxtLink
             :to="item.path"
-            class="relative group flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium transition-all duration-300 outline-none"
+            class="relative group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-primary"
             :class="
               isActive(item.path)
-                ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200'
+                ? 'bg-primary/10 text-primary'
+                : 'text-muted hover:bg-elevated hover:text-highlighted'
             "
           >
             <!-- Faol holat indikatori (Chapdagi chiziqcha) -->
             <div
               v-if="isActive(item.path)"
-              class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-blue-600 dark:bg-blue-400 rounded-r-full shadow-[0_0_8px_rgba(37,99,235,0.6)]"
+              class="absolute -left-3 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary"
             ></div>
 
-            <!-- Ikonka (Hover qilinganda biroz kattalashadi) -->
+            <!-- Ikonka -->
             <UIcon
               :name="item.icon"
-              class="text-[18px] transition-transform duration-300 group-hover:scale-110"
+              class="size-4.5 shrink-0 transition-transform duration-200 group-hover:scale-110"
               :class="
                 isActive(item.path)
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'
+                  ? 'text-primary'
+                  : 'text-dimmed group-hover:text-default'
               "
             />
 
-            <span class="text-sm">{{ item.name }}</span>
+            <span class="truncate">{{ item.name }}</span>
           </NuxtLink>
         </li>
       </ul>
     </nav>
 
     <!-- Pastki qism: Profil va Dark Mode -->
-    <div class="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+    <div class="mt-auto shrink-0 p-3">
       <div
-        class="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer group"
+        class="flex items-center justify-between gap-2 rounded-xl border border-default bg-elevated/50 p-2.5 transition-colors hover:bg-elevated cursor-pointer group"
       >
-        <div class="flex items-center gap-3">
-          <!-- Avatar atrofiga hoshiya (ring) berildi -->
+        <div class="flex min-w-0 items-center gap-3">
+          <!-- Avatar (ism bosh harfi) -->
+          <div
+            class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold uppercase text-primary"
+          >
+            {{ authStore.user?.fName?.[0] }}
+          </div>
 
-          <div class="flex flex-col text-left">
+          <div class="flex min-w-0 flex-col text-left">
             <span
-              class="text-[13px] font-semibold text-gray-900 dark:text-white leading-none mb-1 capitalize"
+              class="mb-1 truncate text-[13px] font-semibold leading-none text-highlighted capitalize"
               >{{ authStore.user?.fName }} {{ authStore.user?.lName[0] }}.</span
             >
-            <span
-              class="text-[11px] text-gray-500 dark:text-gray-400 leading-none"
-              >{{ authStore.user?.role }}</span
-            >
+            <span class="truncate text-[11px] leading-none text-muted">{{
+              authStore.user?.role
+            }}</span>
           </div>
         </div>
 
-        <!-- Tungi/Kunduzgi rejim tugmasi (UButton variant="ghost") -->
+        <!-- Tungi/Kunduzgi rejim tugmasi -->
         <UButton
           @click.stop="isDark = !isDark;"
           :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+          color="neutral"
           variant="ghost"
-          class="rounded-lg transition-transform hover:scale-105 active:scale-95"
+          size="sm"
+          class="shrink-0 rounded-lg"
           aria-label="Mavzuni o'zgartirish"
         />
       </div>

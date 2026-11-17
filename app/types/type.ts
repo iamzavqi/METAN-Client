@@ -97,7 +97,7 @@ export interface Wallet {
     | "error"
     | "neutral";
   balance: number;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -108,7 +108,7 @@ export interface Category {
   status: number;
   type: number;
   inOrOut: number;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -116,7 +116,7 @@ export interface SubCategory {
   _id: string;
   name: string;
   comment: string;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -135,7 +135,7 @@ export interface Transaction {
   categoryID: Category;
   subCategoryID: SubCategory;
   walletID: Wallet;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -149,11 +149,10 @@ export interface Nachisleniya {
   categoryID: Category;
   subCategoryID: SubCategory;
   comment: string;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
-
 
 export interface Kontragent {
   _id: string;
@@ -161,7 +160,7 @@ export interface Kontragent {
   balance: number;
   phone: string;
   comment: string;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -175,7 +174,7 @@ export interface Worker {
   balance: number;
   active: boolean;
   position: string;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -191,7 +190,7 @@ export interface Asset {
   walletID: Wallet;
   comment: string;
   date: Date;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -201,7 +200,7 @@ export interface Perebroska {
   amount: number;
   oneWalletID: Wallet;
   twoWalletID: Wallet;
-  userID: User;
+  userId: User;
   createdAt: Date;
   updatedAt: Date;
 }
