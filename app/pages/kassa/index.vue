@@ -2,7 +2,6 @@
 useHead({ title: "Kassa" });
 definePageMeta({
   middleware: ["check-user", "check-role"],
-  roles: ["director", "ceo", "moliyachi", "kassir", "operator"],
 });
 </script>
 

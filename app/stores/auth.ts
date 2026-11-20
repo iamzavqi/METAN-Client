@@ -1,9 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-const { disconnect } = useSocket();
 import { useUrlStore } from "./url";
 import type { User, Company } from "~/types/type";
-const token = useCookie("financeToken");
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -11,12 +9,14 @@ export const useAuthStore = defineStore("auth", {
     users: [] as User[],
     user: {} as User,
   }),
-
+  
   actions: {
     hasRole(...roles: string[]) {
       return roles.includes(this.user?.role);
     },
     logout() {
+      const { disconnect } = useSocket();
+      const token = useCookie("financeToken");
       disconnect();
       token.value = "";
       return navigateTo("/auth");

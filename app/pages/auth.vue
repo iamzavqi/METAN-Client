@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import { useAuthStore } from "~/stores/auth";
 
 useHead({
@@ -9,6 +9,8 @@ useHead({
 definePageMeta({
   layout: "auth",
 });
+
+const {disconnect} = useSocket()
 
 const authStore = useAuthStore();
 const toast = useToast();
@@ -38,6 +40,10 @@ const login = async () => {
   await authStore.login(state);
   isLoading.value = false;
 };
+
+onMounted(() => {
+  disconnect()
+})
 </script>
 
 <template>
@@ -62,9 +68,9 @@ const login = async () => {
         <div
           class="flex size-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30"
         >
-          <UIcon name="i-lucide-wallet" class="size-5 text-white" />
+          <UIcon name="icon-park-solid:level" class="size-5 text-white" />
         </div>
-        <span class="text-lg font-semibold tracking-tight">Moliya tizimi</span>
+        <span class="text-lg font-semibold tracking-tight">YuGaz</span>
       </div>
 
       <!-- Asosiy matn -->
@@ -78,8 +84,8 @@ const login = async () => {
         <h2
           class="mt-6 text-4xl xl:text-5xl font-semibold leading-tight tracking-tight"
         >
-          Moliyaviy nazorat —
-          <span class="text-primary">bir joyda.</span>
+          YuGaz —
+          <span class="text-primary">hammasi bir joyda.</span>
         </h2>
         <p class="mt-5 text-base leading-relaxed text-white/60">
           Kirim-chiqim, hisobotlar va ichki jarayonlarni yagona tizimda
@@ -91,9 +97,14 @@ const login = async () => {
             <span
               class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5"
             >
-              <UIcon name="i-lucide-arrow-left-right" class="size-5 text-primary" />
+              <UIcon
+                name="i-lucide-arrow-left-right"
+                class="size-5 text-primary"
+              />
             </span>
-            <span class="text-sm text-white/80">Kirim va chiqimlar nazorati</span>
+            <span class="text-sm text-white/80"
+              >Kirim va chiqimlar nazorati</span
+            >
           </li>
           <li class="flex items-center gap-4">
             <span
@@ -109,7 +120,9 @@ const login = async () => {
             >
               <UIcon name="i-lucide-shield-check" class="size-5 text-primary" />
             </span>
-            <span class="text-sm text-white/80">Rollar asosida kirish huquqi</span>
+            <span class="text-sm text-white/80"
+              >Rollar asosida kirish huquqi</span
+            >
           </li>
         </ul>
       </div>
@@ -122,27 +135,23 @@ const login = async () => {
     </aside>
 
     <!-- O'ng panel: forma -->
-    <main
-      class="relative flex items-center justify-center px-6 py-12 sm:px-12"
-    >
+    <main class="relative flex items-center justify-center px-6 py-12 sm:px-12">
       <div class="w-full max-w-sm">
         <!-- Mobil logo -->
         <div class="mb-10 flex items-center gap-3 lg:hidden">
           <div
             class="flex size-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/30"
           >
-            <UIcon name="i-lucide-wallet" class="size-5 text-white" />
+            <UIcon name="icon-park-solid:level" class="size-5 text-white" />
           </div>
           <span class="text-lg font-semibold tracking-tight text-highlighted">
-            Moliya tizimi
+            YuGaz
           </span>
         </div>
 
         <!-- Header qismi -->
         <div class="mb-8">
-          <h1
-            class="text-3xl font-semibold tracking-tight text-highlighted"
-          >
+          <h1 class="text-3xl font-semibold tracking-tight text-highlighted">
             Xush kelibsiz
           </h1>
           <p class="mt-2 text-sm text-muted">
@@ -176,22 +185,6 @@ const login = async () => {
               class="w-full"
             />
           </UFormField>
-
-          <!-- Eslab qolish va parolni tiklash -->
-          <div class="flex items-center justify-between gap-2 text-sm">
-            <span
-              class="flex items-center gap-2 cursor-pointer text-muted"
-            >
-              <UCheckbox name="remember" />
-              <span>Meni eslab qol</span>
-            </span>
-            <span
-              href="#"
-              class="cursor-pointer font-medium text-primary hover:opacity-80 transition-opacity"
-            >
-              Parolni unutdingizmi?
-            </span>
-          </div>
 
           <!-- Submit button -->
           <UButton

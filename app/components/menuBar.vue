@@ -16,10 +16,16 @@ const routes = [
     icon: "si:dashboard-fill",
   },
   {
+    name: "Sotuv",
+    path: "/sale",
+    icon: "andrsrxn:money-check",
+    roles: ["director", "ceo", "moliyachi", "kassir",],
+  },
+  {
     name: "Kassa",
     path: "/kassa",
     icon: "andrsrxn:money-check",
-    roles: ["director", "ceo", "moliyachi", "kassir", "operator"],
+    roles: ["director", "ceo", "moliyachi", "kassir",],
   },
  /*  {
     name: "Hamyon",

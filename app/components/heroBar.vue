@@ -15,7 +15,12 @@ const routes = [
     path: "/",
     icon: "si:dashboard-fill",
   },
-   {
+  {
+    name: "Sotuv",
+    path: "/sale",
+    icon: "andrsrxn:money-check",
+  },
+  {
     name: "Kassa",
     path: "/kassa",
     icon: "andrsrxn:money-check",
@@ -25,8 +30,10 @@ const routes = [
 const route = useRoute();
 const isActive = (path: string) => route.path === path;
 
-import { useAuthStore } from "~/stores/auth";
 const authStore = useAuthStore();
+const logout = () => {
+  authStore.logout()
+}
 </script>
 
 <template>
@@ -41,7 +48,7 @@ const authStore = useAuthStore();
         <div
           class="flex size-9 items-center justify-center rounded-xl bg-primary text-white shadow-md shadow-primary/30"
         >
-          <UIcon name="i-lucide-trending-up" class="size-4.5" />
+          <UIcon name="icon-park-solid:level" class="size-4.5" />
         </div>
         <span class="text-[15px] font-semibold tracking-tight text-highlighted">
           YuGaz
@@ -60,7 +67,9 @@ const authStore = useAuthStore();
             <UIcon :name="item.icon" class="size-4.5" />
           </div>
           <div class="min-w-0">
-            <p class="flex items-center gap-1.5 text-[11px] leading-none text-dimmed">
+            <p
+              class="flex items-center gap-1.5 text-[11px] leading-none text-dimmed"
+            >
               YuGaz
               <UIcon name="i-lucide-chevron-right" class="size-3" />
               {{ item.name }}
@@ -86,8 +95,15 @@ const authStore = useAuthStore();
         class="rounded-lg"
         aria-label="Mavzuni o'zgartirish"
       />
+      <div>
+        <UIcon
+          @click="logout()"
+          name="solar:logout-2-bold"
+          class="text-2xl text-red-500 cursor-pointer"
+        />
+      </div>
 
-      <span class="h-6 w-px bg-border"></span>
+      <span class="h-6 w-px bg-border"> </span>
 
       <!-- Profil -->
       <div class="flex items-center gap-2.5">

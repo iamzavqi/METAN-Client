@@ -3,7 +3,6 @@
 useHead({ title: "Dashboard" });
 definePageMeta({
 	middleware: ["check-user", "check-role"],
-	roles: [ "director"]
 });
 </script>
 
