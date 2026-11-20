@@ -18,14 +18,20 @@ const routes = [
   {
     name: "Sotuv",
     path: "/sale",
-    icon: "andrsrxn:money-check",
+    icon: "reicon:ticket-sale-filled",
     roles: ["director", "ceo", "moliyachi", "kassir",],
   },
   {
     name: "Kassa",
     path: "/kassa",
     icon: "andrsrxn:money-check",
-    roles: ["director", "ceo", "moliyachi", "kassir",],
+    roles: ["director", "ceo", "moliyachi",],
+  },
+  {
+    name: "Shartnoma",
+    path: "/contract",
+    icon: "andrsrxn:file-content",
+    roles: ["director", "ceo", "moliyachi",],
   },
  /*  {
     name: "Hamyon",
